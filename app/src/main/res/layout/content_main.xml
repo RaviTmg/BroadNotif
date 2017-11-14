@@ -12,27 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:id="@+id/message"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/addressEditText"
+            android:id="@+id/textView1"/>
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Server ip address" />
-
-        <EditText
-            android:id="@+id/portEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Server port number" />
+            android:id="@+id/notif"
+            android:text="enable notif"/>
 
         <Button
             android:id="@+id/connectButton"

@@ -27,8 +27,10 @@ import io.socket.emitter.Emitter;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static boolean isService = false;
     TextView response;
-    Button buttonConnect, buttonClear;
+    Button buttonConnect, buttonClear, buttonNotif;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,20 @@ public class MainActivity extends AppCompatActivity {
         buttonConnect = (Button) findViewById(R.id.connectButton);
         buttonClear = (Button) findViewById(R.id.clearButton);
         response = (TextView) findViewById(R.id.responseTextView);
+        buttonNotif = (Button) findViewById(R.id.notif);
+        buttonNotif.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this,BackgroundService.class);
+                i.putExtra("context",String.valueOf(getApplicationContext()));
+                startService(i);
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+                isService = true;
+            }
+        });
 
 
         buttonConnect.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
                     }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
 
                         @Override
-                        public void call(Object... args) {}
+                        public void call(Object... args) {
+                        }
 
                     });
                     socket.connect();
@@ -136,5 +153,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();stopService(new Intent(MainActivity.this,
+                BackgroundService.class));
+        if(isService)
+        {
+            TextView tv = (TextView) findViewById(R.id.textView1);
+            tv.setText("Service Resumed");
+            isService = false;
+        }
+
     }
 }
